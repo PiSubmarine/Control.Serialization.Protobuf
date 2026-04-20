@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package pisubmarine.control.protobuf;
+
+message HorizontalCommand
+{
+  double surge = 1;
+  double yaw = 2;
+}
+
+message VerticalCommand
+{
+  oneof value
+  {
+    bool keep_current = 1;
+    double depth_meters = 2;
+    double ballast_position = 3;
+  }
+}
+
+message GimbalCommand
+{
+  double pitch_radians = 1;
+}
+
+message LampCommand
+{
+  double intensity = 1;
+}
+
+message ManualMode
+{
+}
+
+message HoldPositionMode
+{
+}
+
+message ModeRequest
+{
+  oneof value
+  {
+    ManualMode manual = 1;
+    HoldPositionMode hold_position = 2;
+  }
+}
+
+message AutoFocus
+{
+}
+
+message ManualFocus
+{
+  double position = 1;
+}
+
+message EnabledVideo
+{
+  enum StreamProfile
+  {
+    LOW_LATENCY = 0;
+    STANDARD = 1;
+    HIGH_QUALITY = 2;
+  }
+
+  StreamProfile profile = 1;
+
+  oneof focus
+  {
+    AutoFocus auto_focus = 2;
+    ManualFocus manual_focus = 3;
+  }
+}
+
+message VideoCommand
+{
+  oneof state
+  {
+    bool disabled = 1;
+    EnabledVideo enabled = 2;
+  }
+}
+
+message OperatorCommand
+{
+  string lease_id = 1;
+  HorizontalCommand movement = 2;
+  VerticalCommand vertical_control = 3;
+  GimbalCommand gimbal_target = 4;
+  LampCommand lamp_intensity = 5;
+  VideoCommand video_control = 6;
+  ModeRequest mode_request = 7;
+}
