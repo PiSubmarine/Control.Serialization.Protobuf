@@ -5,6 +5,7 @@
 #include "OperatorCommand.pb.h"
 #include "PiSubmarine/Control/ErrorCode.h"
 #include "PiSubmarine/Error/Api/MakeError.h"
+#include "PiSubmarine/Ballast/BallastFillFraction.h"
 
 namespace PiSubmarine::Control::Protobuf
 {
@@ -35,7 +36,7 @@ namespace PiSubmarine::Control::Protobuf
             case ::pisubmarine::control::protobuf::VerticalCommand::kDepthMeters:
                 return Vertical::Api::Command::SetDepthTargetTo(Meters{protoVertical.depth_meters()});
             case ::pisubmarine::control::protobuf::VerticalCommand::kBallastPosition:
-                return Vertical::Api::Command::SetBallastPositionTo(NormalizedFraction{protoVertical.ballast_position()});
+                return Vertical::Api::Command::SetBallastPositionTo(Ballast::BallastFillFraction{protoVertical.ballast_position()});
             case ::pisubmarine::control::protobuf::VerticalCommand::kKeepCurrent:
             case ::pisubmarine::control::protobuf::VerticalCommand::VALUE_NOT_SET:
                 return Vertical::Api::Command::KeepCurrentValue();
